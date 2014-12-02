@@ -10,7 +10,7 @@ package com.asgamer.basics1
 		
 		private var numStars:int = 80;
 		// we need to keep track of our enemies.
-		private var enemyList:Array = new Array();
+		public static var enemyList:Array = new Array();
 		// moved ourShip to a class variable.
 		private var ourShip:Ship;
 		
@@ -28,7 +28,34 @@ package com.asgamer.basics1
 				stage.addChildAt(new Star(stage), stage.getChildIndex(ourShip));
 			}
 			
+			//running a loop now.... so we can keep creating enemies randomly.
+			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 			
+		}
+		
+		//our loop function
+		private function loop(e:Event) : void
+		{
+			//run if condition is met.
+			if (Math.floor(Math.random() * 90) == 5)
+			{
+				//create our enemy
+				var enemy:Stinger = new Stinger(stage, ourShip);
+				
+				//listen for enemy being removed from stage
+				enemy.addEventListener(Event.REMOVED_FROM_STAGE, removeEnemy, false, 0, true);
+				
+				//add our enemy to the enemyList
+				enemyList.push(enemy);
+				
+				stage.addChild(enemy);
+			}
+		}
+		
+		//run when an enemy is removed from stage
+		private function removeEnemy(e:Event)
+		{
+			enemyList.splice(enemyList.indexOf(e.currentTarget), 1);
 		}
 		
 	}
